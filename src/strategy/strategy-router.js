@@ -5,7 +5,7 @@ const strategyRouter = express.Router();
 const jsonParser = express.json();
 const path = require("path");
 
-const serializeRouter = (strategy) => ({
+const serializeStrategy = (strategy) => ({
   id: strategy.id,
   title: strategy.title,
   stocks: strategy.stocks,
@@ -17,14 +17,14 @@ strategyRouter
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     StrategyService.getAllNotes(knexInstance)
-      .then((notes) => {
-        res.json(notes.map(serializeRouter));
+      .then((strategy) => {
+        res.json(strategy.map(serializeStrategy));
       })
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { notes_name, notes_content, folders_id } = req.body;
-    const newNotes = { notes_name, notes_content, folders_id };
+    const { title, stocks } = req.body;
+    const newStrategy = { title, stocks };
 
     for (const [key, value] of Object.entries(newNotes))
       if (value == null)
@@ -32,12 +32,12 @@ strategyRouter
           error: { message: `Missing '${key}' in request body` },
         });
 
-    StrategyService.insertNotes(req.app.get("db"), newNotes)
-      .then((notes) => {
+    StrategyService.insertStrategy(req.app.get("db"), newStrategy)
+      .then((strategy) => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${notes.notes_id}`))
-          .json(serializeRouter(notes));
+          .location(path.posix.join(req.originalUrl, `/${strategy.id}`))
+          .json(serializeStrategy(strategy));
       })
       .catch(next);
   });
@@ -45,23 +45,23 @@ strategyRouter
 strategyRouter
   .route("/:notes_id")
   .all((req, res, next) => {
-    StrategyService.getById(req.app.get("db"), req.params.notes_id)
-      .then((notes) => {
-        if (!notes) {
+    StrategyService.getById(req.app.get("db"), req.params.id)
+      .then((strategy) => {
+        if (!strategy) {
           return res.status(404).json({
-            error: { message: `notes doesn't exist` },
+            error: { message: `strategy doesn't exist` },
           });
         }
-        res.notes = notes;
+        res.strategy = strategy;
         next();
       })
       .catch(next);
   })
   .get((req, res, next) => {
-    res.json(serializeRouter(res.notes));
+    res.json(serializeStrategy(res.strategy));
   })
   .delete((req, res, next) => {
-    StrategyService.deleteNotes(req.app.get("db"), req.params.notes_id)
+    StrategyService.deleteNotes(req.app.get("db"), req.params.id)
       .then((numRowsAffected) => {
         res.status(204).end();
       })

@@ -1,89 +1,94 @@
 const express = require("express");
-const NotesService = require("./notes-service");
+const StockService = require("./stock-service");
 const xss = require("xss");
-const notesRouter = express.Router();
+const stockRouter = express.Router();
 const jsonParser = express.json();
 const path = require("path");
 
-const serializeNotes = (notes) => ({
-  notes_id: notes.notes_id,
-  notes_name: notes.notes_name,
-  notes_content: xss(notes.notes_content),
-  date_published: notes.date_published,
-  folders_id: notes.folders_id,
-});
+const serializeStock = (stock) => ({
+  id: stock.id,
+  ticker: stock.ticker,
+  industry: stock.industry,
+  shares: stock.shares,
+  price: stock.price,
+  EPS1: stock.EPS1,
+  ESP5: stock.EPS5,
+  yield: stock.yield,  
+  date_published: stock.date_published,
 
-notesRouter
+});//! id, ticker, industry, shares, price, EPS1, EPS5, yield, date_published
+
+stockRouter
   .route("/")
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
-    NotesService.getAllNotes(knexInstance)
-      .then((notes) => {
-        res.json(notes.map(serializeNotes));
+    StockService.getAllStocks(knexInstance)
+      .then((stock) => {
+        res.json(stock.map(serializeStock));
       })
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { notes_name, notes_content, folders_id } = req.body;
-    const newNotes = { notes_name, notes_content, folders_id };
+    const { ticker, industry, shares, price, EPS1, EPS5, yield } = req.body;
+    const newStock = { ticker, industry, shares, price, EPS1, EPS5, yield };
 
-    for (const [key, value] of Object.entries(newNotes))
+    for (const [key, value] of Object.entries(newStock))
       if (value == null)
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
         });
 
-    NotesService.insertNotes(req.app.get("db"), newNotes)
-      .then((notes) => {
+    StockService.insertStock(req.app.get("db"), newStock)
+      .then((stock) => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${notes.notes_id}`))
-          .json(serializeNotes(notes));
+          .location(path.posix.join(req.originalUrl, `/${stock.id}`))
+          .json(serializeStock(stock));
       })
       .catch(next);
   });
 
-notesRouter
-  .route("/:notes_id")
+stockRouter
+  .route("/:id")
   .all((req, res, next) => {
-    NotesService.getById(req.app.get("db"), req.params.notes_id)
-      .then((notes) => {
-        if (!notes) {
+    StockService.getById(req.app.get("db"), req.params.id)
+      .then((stock) => {
+        if (!stock) {
           return res.status(404).json({
-            error: { message: `notes doesn't exist` },
+            error: { message: `stock doesn't exist` },
           });
         }
-        res.notes = notes;
+        res.stock = stock;
         next();
       })
       .catch(next);
   })
   .get((req, res, next) => {
-    res.json(serializeNotes(res.notes));
+    res.json(serializeStock(res.stock));
   })
   .delete((req, res, next) => {
-    NotesService.deleteNotes(req.app.get("db"), req.params.notes_id)
+    StockService.deleteStock(req.app.get("db"), req.params.id)
       .then((numRowsAffected) => {
         res.status(204).end();
       })
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { notes_name, notes_content, folders_id } = req.body;
-    const notesToUpdate = { notes_name, notes_content, folders_id };
+    const { ticker, industry, shares, price, EPS1, EPS5, yield } = req.body;
+    const stockToUpdate = { ticker, industry, shares, price, EPS1, EPS5, yield };
 
-    const numberOfValues = Object.values(notesToUpdate).filter(Boolean).length;
+    const numberOfValues = Object.values(stockToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must contain either name or content'`,
+          message: `Request body must contain either name or content'`, //TODO  <-----------------
         },
       });
 
-    NotesService.updateNotes(
+    StockService.updateStock(
       req.app.get("db"),
-      req.params.notes_id,
-      notesToUpdate
+      req.params.id,
+      stockToUpdate
     )
       .then((numRowsAffected) => {
         res.status(204).end();
@@ -91,4 +96,4 @@ notesRouter
       .catch(next);
   });
 
-module.exports = notesRouter;
+module.exports = stockRouter;
