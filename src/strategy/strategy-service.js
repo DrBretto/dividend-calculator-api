@@ -1,4 +1,4 @@
-const NotesService = {
+const StrategyService = {
   getAllStrategies(knex) {
     return knex.select("*").from("strategy");
   },
@@ -26,4 +26,4 @@ const NotesService = {
   },
 };
 
-module.exports = NotesService;
+module.exports = StrategyService;

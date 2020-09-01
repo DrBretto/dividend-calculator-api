@@ -16,7 +16,7 @@ strategyRouter
   .route("/")
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
-    StrategyService.getAllNotes(knexInstance)
+    StrategyService.getAllStrategies(knexInstance)
       .then((strategy) => {
         res.json(strategy.map(serializeStrategy));
       })
@@ -26,7 +26,7 @@ strategyRouter
     const { title, stocks } = req.body;
     const newStrategy = { title, stocks };
 
-    for (const [key, value] of Object.entries(newNotes))
+    for (const [key, value] of Object.entries(newStrategy))
       if (value == null)
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
@@ -43,7 +43,7 @@ strategyRouter
   });
 
 strategyRouter
-  .route("/:notes_id")
+  .route("/:id")
   .all((req, res, next) => {
     StrategyService.getById(req.app.get("db"), req.params.id)
       .then((strategy) => {
@@ -61,17 +61,17 @@ strategyRouter
     res.json(serializeStrategy(res.strategy));
   })
   .delete((req, res, next) => {
-    StrategyService.deleteNotes(req.app.get("db"), req.params.id)
+    StrategyService.deleteStrategy(req.app.get("db"), req.params.id)
       .then((numRowsAffected) => {
         res.status(204).end();
       })
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { notes_name, notes_content, folders_id } = req.body;
-    const notesToUpdate = { notes_name, notes_content, folders_id };
+    const { title, stocks } = req.body;
+    const strategyToUpdate = { title, stocks };
 
-    const numberOfValues = Object.values(notesToUpdate).filter(Boolean).length;
+    const numberOfValues = Object.values(strategyToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
@@ -79,10 +79,10 @@ strategyRouter
         },
       });
 
-    StrategyService.updateNotes(
+    StrategyService.updateStrategy(
       req.app.get("db"),
-      req.params.notes_id,
-      notesToUpdate
+      req.params.id,
+      strategyToUpdate
     )
       .then((numRowsAffected) => {
         res.status(204).end();
