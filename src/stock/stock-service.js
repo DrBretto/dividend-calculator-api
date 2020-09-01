@@ -17,13 +17,13 @@ const StockService = {
     return knex.from("stock").select("*").where("id", id).first();
   },
 
-  deleteNotes(knex, id) {
+  deleteStock(knex, id) {
     return knex("stock").where({ id }).delete();
   },
 
-  updateNotes(knex, id, newStockFields) {
+  updateStock(knex, id, newStockFields) {
     return knex("stock").where({ id }).update(newStockFields);
   },
 };
 
-module.exports = NotesService;
+module.exports = StockService;

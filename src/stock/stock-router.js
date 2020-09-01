@@ -16,7 +16,7 @@ const serializeStock = (stock) => ({
   yield: stock.yield,  
   date_published: stock.date_published,
 
-});//! id, ticker, industry, shares, price, EPS1, EPS5, yield, date_published
+});
 
 stockRouter
   .route("/")

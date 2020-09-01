@@ -4,7 +4,7 @@ const DividendService = require("./DividendService");
 
 const knexInstance = knex({
   client: "pg",
-  connection: process.env.DB_URL,
+  connection: process.env.DATABASE_URL,
 });
 
 console.log(DividendService.getAllArticles());
