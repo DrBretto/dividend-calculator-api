@@ -4,6 +4,7 @@ const xss = require("xss");
 const stockRouter = express.Router();
 const jsonParser = express.json();
 const path = require("path");
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const serializeStock = (stock) => ({
   id: stock.id,
@@ -11,15 +12,15 @@ const serializeStock = (stock) => ({
   industry: stock.industry,
   shares: stock.shares,
   price: stock.price,
-  EPS1: stock.EPS1,
-  ESP5: stock.EPS5,
-  yield: stock.yield,  
+  eps1: stock.eps1,
+  ESP5: stock.eps5,
+  yield: stock.yield,
   date_published: stock.date_published,
-
 });
 
 stockRouter
   .route("/")
+  .all(requireAuth)
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     StockService.getAllStocks(knexInstance)
@@ -29,8 +30,8 @@ stockRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { ticker, industry, shares, price, EPS1, EPS5, yield } = req.body;
-    const newStock = { ticker, industry, shares, price, EPS1, EPS5, yield };
+    const { ticker, industry, shares, price, eps1, eps5, yield } = req.body;
+    const newStock = { ticker, industry, shares, price, eps1, eps5, yield };
 
     for (const [key, value] of Object.entries(newStock))
       if (value == null)
@@ -49,6 +50,7 @@ stockRouter
   });
 
 stockRouter
+.all(requireAuth)
   .route("/:id")
   .all((req, res, next) => {
     StockService.getById(req.app.get("db"), req.params.id)
@@ -74,8 +76,16 @@ stockRouter
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { ticker, industry, shares, price, EPS1, EPS5, yield } = req.body;
-    const stockToUpdate = { ticker, industry, shares, price, EPS1, EPS5, yield };
+    const { ticker, industry, shares, price, eps1, eps5, yield } = req.body;
+    const stockToUpdate = {
+      ticker,
+      industry,
+      shares,
+      price,
+      eps1,
+      eps5,
+      yield,
+    };
 
     const numberOfValues = Object.values(stockToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
@@ -85,11 +95,7 @@ stockRouter
         },
       });
 
-    StockService.updateStock(
-      req.app.get("db"),
-      req.params.id,
-      stockToUpdate
-    )
+    StockService.updateStock(req.app.get("db"), req.params.id, stockToUpdate)
       .then((numRowsAffected) => {
         res.status(204).end();
       })

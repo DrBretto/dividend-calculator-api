@@ -4,6 +4,7 @@ const xss = require("xss");
 const strategyRouter = express.Router();
 const jsonParser = express.json();
 const path = require("path");
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const serializeStrategy = (strategy) => ({
   id: strategy.id,
@@ -14,6 +15,7 @@ const serializeStrategy = (strategy) => ({
 
 strategyRouter
   .route("/")
+  .all(requireAuth)
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     StrategyService.getAllStrategies(knexInstance)
@@ -23,14 +25,17 @@ strategyRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { title, stocks } = req.body;
-    const newStrategy = { title, stocks };
+    const { title, stocks, author_id } = req.body;
+      const newStrategy = { title, stocks, author_id };
 
     for (const [key, value] of Object.entries(newStrategy))
       if (value == null)
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
         });
+
+        newComment.user_id = req.user.id
+        console.log("req.user.id", req.user.id)
 
     StrategyService.insertStrategy(req.app.get("db"), newStrategy)
       .then((strategy) => {
@@ -44,6 +49,7 @@ strategyRouter
 
 strategyRouter
   .route("/:id")
+  .all(requireAuth)
   .all((req, res, next) => {
     StrategyService.getById(req.app.get("db"), req.params.id)
       .then((strategy) => {
