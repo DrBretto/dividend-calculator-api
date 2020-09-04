@@ -3,7 +3,6 @@ TRUNCATE TABLE users, strategy, stock ;
 INSERT INTO users (id, user_name, full_name, nickname, password)
 VALUES
   (1, 'dunder', 'Dunder Mifflin', null, 'password'),
-  (2, 'drbretto', 'Brett Westerlund', 'Bo', 'gemini82'),
   (3, 'c.bloggs', 'Charlie Bloggs', 'Charlie', 'charlie-password'),
   (4, 's.smith', 'Sam Smith', 'Sam', 'sam-password'),
   (5, 'lexlor', 'Alex Taylor', 'Lex', 'lex-password'),
