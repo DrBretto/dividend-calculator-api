@@ -1,10 +1,10 @@
 const express = require("express");
 const StrategyService = require("./strategy-service");
-const xss = require("xss");
 const strategyRouter = express.Router();
 const jsonParser = express.json();
 const path = require("path");
 const { requireAuth } = require('../middleware/jwt-auth')
+const xss = require("xss");
 
 const serializeStrategy = (strategy) => ({
   id: strategy.id,
