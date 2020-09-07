@@ -1,19 +1,16 @@
 TRUNCATE TABLE users, strategy, stock ;
 
-INSERT INTO users (id, user_name, full_name, nickname, password)
+INSERT INTO users (id, user_name, full_name, password, nickname, date_created)
 VALUES
-  (1, 'dunder', 'Dunder Mifflin', null, 'password'),
-  (3, 'c.bloggs', 'Charlie Bloggs', 'Charlie', 'charlie-password'),
-  (4, 's.smith', 'Sam Smith', 'Sam', 'sam-password'),
-  (5, 'lexlor', 'Alex Taylor', 'Lex', 'lex-password'),
-  (6, 'wippy', 'Ping Won In', 'Ping', 'ping-password');
+  (26,'drbretto','Brett Westerlundd','$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m',NULL,'2020-09-04 16:44:43'),
+  (27,'drbretto2','Test Full Name','$2a$12$bRUxowdxGefsLvVZZEa9Gugf7srbIePKAmPEJL6mdjAJ/OJuzdz0.','Test Nickname','2020-09-04 19:02:53');
 
 
 INSERT INTO strategy (id, title, stocks, date_published, author_id)
 VALUES 
-  (1, 'strategy numero uno', array [1,2,3,4,5], '2016-01-16 12:00:00', 1),
-  (2, 'Second Attempt at a strategy', array [6,3,2,4], '2016-01-16 12:00:00', 2),
-  (3, 'third times a charm', array [4,3,5,6,7], '2016-01-16 12:00:00', 1);
+  (1, 'strategy numero uno', array [1,2,3,4,5], '2016-01-16 12:00:00', 26),
+  (2, 'Second Attempt at a strategy', array [6,3,2,4], '2016-01-16 12:00:00', 27),
+  (3, 'third times a charm', array [4,3,5,6,7], '2016-01-16 12:00:00', 26);
 
 INSERT INTO stock ( id, ticker, industry, shares, price, eps1, eps5, yield, date_published)
 VALUES
@@ -24,3 +21,5 @@ VALUES
   (5, 'BUTT', 'Technology', 10, 60.90, 2.28, 0.05, 1.76, '2016-01-16 12:00:00'), 
   (6, 'STUFF', 'Materials', 35, 90.60, 1.64, -0.05, 6.98, '2016-01-16 12:00:00'), 
   (7, 'STONK', 'Technology', 37, 3.14, -4.71, -0.01, 3.02, '2016-01-16 12:00:00');
+
+
