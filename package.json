@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "predeploy": "npm audit",
+    "prdeploy": "npm audit",
     "postdeploy": "npm run migrate:production",
     "deploy": "git push heroku master",
     "test": "mocha --require test/setup.js",
