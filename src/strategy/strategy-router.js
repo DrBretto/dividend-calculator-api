@@ -3,15 +3,14 @@ const StrategyService = require("./strategy-service");
 const strategyRouter = express.Router();
 const jsonParser = express.json();
 const path = require("path");
-const { requireAuth } = require('../middleware/jwt-auth')
+const { requireAuth } = require("../middleware/jwt-auth");
 const xss = require("xss");
 
 const serializeStrategy = (strategy) => ({
   id: strategy.id,
   title: strategy.title,
-  stocks: strategy.stocks,
   date_published: strategy.date_published,
-  });
+});
 
 strategyRouter
   .route("/")
@@ -25,8 +24,8 @@ strategyRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { title, stocks, author_id } = req.body;
-      const newStrategy = { title, stocks, author_id };
+    const { title, author_id } = req.body;
+    const newStrategy = { title, author_id };
 
     for (const [key, value] of Object.entries(newStrategy))
       if (value == null)
@@ -34,8 +33,8 @@ strategyRouter
           error: { message: `Missing '${key}' in request body` },
         });
 
-        newComment.user_id = req.user.id
-        console.log("req.user.id", req.user.id)
+    newComment.user_id = req.user.id;
+    console.log("req.user.id", req.user.id);
 
     StrategyService.insertStrategy(req.app.get("db"), newStrategy)
       .then((strategy) => {
@@ -74,10 +73,11 @@ strategyRouter
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { title, stocks } = req.body;
-    const strategyToUpdate = { title, stocks };
+    const { title } = req.body;
+    const strategyToUpdate = { title };
 
-    const numberOfValues = Object.values(strategyToUpdate).filter(Boolean).length;
+    const numberOfValues = Object.values(strategyToUpdate).filter(Boolean)
+      .length;
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
