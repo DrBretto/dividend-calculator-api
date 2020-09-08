@@ -3,6 +3,13 @@ const StrategyService = {
     return knex.select("*").from("strategy");
   },
 
+  getUserStrategies(knex, userId) {
+    return knex
+    .from("strategy")
+    .select("strategy.id","strategy.title", "strategy.author_id")
+    .where("strategy.author_id", userId)
+  },
+
   insertStrategy(knex, newStrategy) {
     return knex
       .insert(newStrategy)
