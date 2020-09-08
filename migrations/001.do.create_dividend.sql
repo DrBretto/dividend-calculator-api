@@ -31,8 +31,8 @@ CREATE TABLE stock (
     strategy_id INTEGER
         REFERENCES strategy(id) ON DELETE CASCADE NOT NULL,
     user_id INTEGER
-        REFERENCES users(id) ON DELETE CASCADE NOT NULL
-    date_published TIMESTAMPTZ DEFAULT now() NOT null,
+        REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    date_published TIMESTAMPTZ DEFAULT now() NOT null
 );
 
 
