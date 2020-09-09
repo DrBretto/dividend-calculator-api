@@ -48,7 +48,7 @@ strategyRouter
 
 strategyRouter
   .route("/:id")
-  .all(requireAuth)
+  .all(requreAuth)
   .all((req, res, next) => {
     StrategyService.getByUser(req.app.get("db"), req.params.id)
       .then((strategy) => {
