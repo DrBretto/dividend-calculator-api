@@ -4,6 +4,7 @@ const StrategyService = {
   },
 
   getUserStrategies(knex, userId) {
+    console.log("getUserStrategies -> userId", userId)
     return knex
     .from("strategy")
     .select("strategy.id","strategy.title", "strategy.author_id")
@@ -22,9 +23,13 @@ const StrategyService = {
       });
   },
 
-    //!------ NYI
+
   getById(knex, id) {
     return knex.from("strategy").select("*").where("id", id).first();
+  },
+
+  getByUser(knex, userId) {
+    return knex.from("strategy").select("*").where("author_id", userId);
   },
 
     //!------ NYI

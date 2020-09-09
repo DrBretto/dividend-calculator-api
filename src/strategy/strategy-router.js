@@ -50,7 +50,7 @@ strategyRouter
   .route("/:id")
   .all(requireAuth)
   .all((req, res, next) => {
-    StrategyService.getById(req.app.get("db"), req.params.id)
+    StrategyService.getByUser(req.app.get("db"), req.params.id)
       .then((strategy) => {
         if (!strategy) {
           return res.status(404).json({
@@ -63,8 +63,9 @@ strategyRouter
       .catch(next);
   })
   .get((req, res, next) => {
-    StrategyService.getUserStrategies(knexInstance, req.params.id)
+    StrategyService.getUserStrategies(req.app.get("db"), req.params.id)
     .then((strategy) => {
+    console.log("strategy", strategy)
       res.json(strategy.map(serializeStrategy));
     })
   
