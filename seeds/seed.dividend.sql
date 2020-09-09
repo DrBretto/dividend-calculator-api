@@ -12,7 +12,7 @@ VALUES
   (2, 'Second Attempt at a strategy', '2016-01-16 12:00:00', 27),
   (3, 'third times a charm', '2016-01-16 12:00:00', 26);
 
-INSERT INTO stock ( id, ticker, industry, shares, price, eps1, eps5, yield, user_id, strategy_id, date_published)
+INSERT INTO stock ( id, ticker, industry, shares, price, eps1, eps5, yield, author_id, strategy_id, date_published)
 VALUES
   (1, 'MSFT', 'Technology', 40, 280.51, 1.15, 0.06, 5.18, 26, 1, '2016-01-16 12:00:00'),
   (2, 'TRQ', 'Materials', 1000, 4.54, 5.76, 0.15, 0.90, 26, 1, '2016-01-16 12:00:00'),

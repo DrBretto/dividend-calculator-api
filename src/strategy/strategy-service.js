@@ -1,18 +1,11 @@
 const StrategyService = {
-  getAllStrategies(knex) {
-    return knex.select("*").from("strategy");
-  },
-
-  getUserStrategies(knex, userId) {
-    console.log("getUserStrategies -> userId", userId)
+  getAllStrategies(knex, userId) {
     return knex
     .from("strategy")
     .select("strategy.id","strategy.title", "strategy.author_id")
     .where("strategy.author_id", userId)
   },
 
-
-  //!------ NYI
   insertStrategy(knex, newStrategy) {
     return knex
       .insert(newStrategy)

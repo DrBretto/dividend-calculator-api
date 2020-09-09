@@ -23,7 +23,9 @@ stockRouter
   .all(requireAuth)
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
-    StockService.getAllStocks(knexInstance)
+    const userId = req.user.id;
+    
+    StockService.getAllStocks(knexInstance, userId)
       .then((stock) => {
         res.json(stock.map(serializeStock));
       })

@@ -18,7 +18,6 @@ strategyRouter
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     const userId = req.user.id;
-    console.log("userId", userId)
     
     StrategyService.getAllStrategies(knexInstance, userId)
       .then((strategy) => {
@@ -27,8 +26,8 @@ strategyRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { title, author_id } = req.body;
-    const newStrategy = { title, author_id };
+    const { title } = req.body;
+    const newStrategy = { title };
 
     for (const [key, value] of Object.entries(newStrategy))
       if (value == null)
@@ -36,7 +35,8 @@ strategyRouter
           error: { message: `Missing '${key}' in request body` },
         });
 
-    newComment.user_id = req.user.id;
+    newStrategy.author_id = req.user.id;
+    console.log("newStrategy", newStrategy)
     console.log("req.user.id", req.user.id);
 
     StrategyService.insertStrategy(req.app.get("db"), newStrategy)
@@ -49,6 +49,8 @@ strategyRouter
       .catch(next);
   });
 
+
+  //! --- NYI
 strategyRouter
   .route("/:id")
   .all(requireAuth)

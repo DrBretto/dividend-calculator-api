@@ -30,7 +30,7 @@ CREATE TABLE stock (
     yield NUMERIC NOT NULL,
     strategy_id INTEGER
         REFERENCES strategy(id) ON DELETE CASCADE NOT NULL,
-    user_id INTEGER
+    author_id INTEGER
         REFERENCES users(id) ON DELETE CASCADE NOT NULL,
     date_published TIMESTAMPTZ DEFAULT now() NOT null
 );
