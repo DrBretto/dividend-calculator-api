@@ -63,7 +63,11 @@ strategyRouter
       .catch(next);
   })
   .get((req, res, next) => {
-    res.json(serializeStrategy(res.strategy));
+    StrategyService.getUserStrategies(knexInstance, req.params.id)
+    .then((strategy) => {
+      res.json(strategy.map(serializeStrategy));
+    })
+  
   })
   .delete((req, res, next) => {
     StrategyService.deleteStrategy(req.app.get("db"), req.params.id)

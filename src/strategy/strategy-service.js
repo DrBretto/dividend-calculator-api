@@ -10,6 +10,8 @@ const StrategyService = {
     .where("strategy.author_id", userId)
   },
 
+
+  //!------ NYI
   insertStrategy(knex, newStrategy) {
     return knex
       .insert(newStrategy)
@@ -20,14 +22,17 @@ const StrategyService = {
       });
   },
 
+    //!------ NYI
   getById(knex, id) {
     return knex.from("strategy").select("*").where("id", id).first();
   },
 
+    //!------ NYI
   deleteStrategy(knex, id) {
     return knex("strategy").where({ id }).delete();
   },
 
+    //!------ NYI
   updateStrategy(knex, id, newStrategyFields) {
     return knex("strategy").where({ id }).update(newStrategyFields);
   },
