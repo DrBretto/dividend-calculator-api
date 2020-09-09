@@ -15,6 +15,8 @@ const serializeStock = (stock) => ({
   eps1: stock.eps1,
   ESP5: stock.eps5,
   yield: stock.yield,
+  strategy_id: stock.strategy_id,
+  author_id: stock.author_id,
   date_published: stock.date_published,
 });
 
@@ -24,6 +26,8 @@ stockRouter
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     const userId = req.user.id;
+    const userPw = req.user.password;
+    console.log("user pw maybe: ", userPw)
     
     StockService.getAllStocks(knexInstance, userId)
       .then((stock) => {

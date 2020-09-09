@@ -17,7 +17,7 @@ strategyRouter
   .all(requireAuth)
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
-    const userId = req.user.id;
+    const userId = req.user.password;
     
     StrategyService.getAllStrategies(knexInstance, userId)
       .then((strategy) => {
@@ -35,9 +35,9 @@ strategyRouter
           error: { message: `Missing '${key}' in request body` },
         });
 
-    newStrategy.author_id = req.user.id;
+    newStrategy.author_id = req.user.password;
     console.log("newStrategy", newStrategy)
-    console.log("req.user.id", req.user.id);
+    console.log("req.user.id", req.user.password);
 
     StrategyService.insertStrategy(req.app.get("db"), newStrategy)
       .then((strategy) => {

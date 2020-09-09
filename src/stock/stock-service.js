@@ -1,5 +1,6 @@
 const StockService = {
   getAllStocks(knex, userId) {
+    console.log("getAllStocks -> userId", userId)
     knex
     .from("stock")
     .select("stock.author_id")

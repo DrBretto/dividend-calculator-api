@@ -2,7 +2,7 @@ const StrategyService = {
   getAllStrategies(knex, userId) {
     return knex
     .from("strategy")
-    .select("strategy.id","strategy.title", "strategy.author_id")
+    .select('*')//("strategy.id","strategy.title", "strategy.author_id")
     .where("strategy.author_id", userId)
   },
 
