@@ -1,9 +1,8 @@
 const StockService = {
   getAllStocks(knex, userId) {
-    console.log("getAllStocks -> userId", userId)
-    knex
+    return knex
     .from("stock")
-    .select("stock.author_id")
+    .select("*")
     .where("stock.author_id", userId)
   },
 

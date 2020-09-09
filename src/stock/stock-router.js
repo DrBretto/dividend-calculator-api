@@ -4,7 +4,7 @@ const xss = require("xss");
 const stockRouter = express.Router();
 const jsonParser = express.json();
 const path = require("path");
-const { requireAuth } = require('../middleware/jwt-auth')
+const { requireAuth } = require("../middleware/jwt-auth");
 
 const serializeStock = (stock) => ({
   id: stock.id,
@@ -13,7 +13,7 @@ const serializeStock = (stock) => ({
   shares: stock.shares,
   price: stock.price,
   eps1: stock.eps1,
-  ESP5: stock.eps5,
+  eps5: stock.eps5,
   yield: stock.yield,
   strategy_id: stock.strategy_id,
   author_id: stock.author_id,
@@ -25,10 +25,8 @@ stockRouter
   .all(requireAuth)
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
-    const userId = req.user.id;
-    const userPw = req.user.password;
-    console.log("user pw maybe: ", userPw)
-    
+    const userId = req.user.password;
+
     StockService.getAllStocks(knexInstance, userId)
       .then((stock) => {
         res.json(stock.map(serializeStock));
@@ -56,7 +54,7 @@ stockRouter
   });
 
 stockRouter
-.all(requireAuth)
+  .all(requireAuth)
   .route("/:id")
   .all((req, res, next) => {
     StockService.getById(req.app.get("db"), req.params.id)
