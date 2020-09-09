@@ -17,7 +17,10 @@ strategyRouter
   .all(requireAuth)
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
-    StrategyService.getAllStrategies(knexInstance)
+    const userId = req.user.id;
+    console.log("userId", userId)
+    
+    StrategyService.getAllStrategies(knexInstance, userId)
       .then((strategy) => {
         res.json(strategy.map(serializeStrategy));
       })
@@ -48,9 +51,9 @@ strategyRouter
 
 strategyRouter
   .route("/:id")
-  .all(requreAuth)
+  .all(requireAuth)
   .all((req, res, next) => {
-    StrategyService.getByUser(req.app.get("db"), req.params.id)
+    StrategyService.getById(req.app.get("db"), req.params.id)
       .then((strategy) => {
         if (!strategy) {
           return res.status(404).json({
@@ -63,12 +66,7 @@ strategyRouter
       .catch(next);
   })
   .get((req, res, next) => {
-    StrategyService.getUserStrategies(req.app.get("db"), req.params.id)
-    .then((strategy) => {
-    console.log("strategy", strategy)
-      res.json(strategy.map(serializeStrategy));
-    })
-  
+    res.json(serializeStrategy(res.strategy));
   })
   .delete((req, res, next) => {
     StrategyService.deleteStrategy(req.app.get("db"), req.params.id)
