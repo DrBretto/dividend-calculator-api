@@ -36,7 +36,7 @@ stockRouter
   .post(jsonParser, (req, res, next) => {
     const { ticker, industry, shares, price, eps1, eps5, yield, strategy_id } = req.body;
     const newStock = { ticker, industry, shares, price, eps1, eps5, yield, strategy_id};
-
+    const userId = req.user.password;
     newStock.author_id = userId
     console.log("newStock here", newStock)
 
