@@ -26,7 +26,6 @@ stockRouter
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     const userId = req.user.password;
-    console.log("userId", userId)
 
     StockService.getAllStocks(knexInstance, userId)
       .then((stock) => {
@@ -38,8 +37,8 @@ stockRouter
     const { ticker, industry, shares, price, eps1, eps5, yield, strategy_id } = req.body;
     const newStock = { ticker, industry, shares, price, eps1, eps5, yield, strategy_id};
 
-    newStock.author_id = req.user.password
-    console.log("newStock", newStock)
+    newStock.author_id = userId
+    console.log("newStock here", newStock)
 
     for (const [key, value] of Object.entries(newStock))
       if (value == null)
