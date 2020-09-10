@@ -34,8 +34,11 @@ stockRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { ticker, industry, shares, price, eps1, eps5, yield } = req.body;
-    const newStock = { ticker, industry, shares, price, eps1, eps5, yield };
+    const { ticker, industry, shares, price, eps1, eps5, yield, strategy_id } = req.body;
+    const newStock = { ticker, industry, shares, price, eps1, eps5, yield, strategy_id};
+
+    newStock.author_id = req.user.password
+    console.log("newStock", newStock)
 
     for (const [key, value] of Object.entries(newStock))
       if (value == null)

@@ -63,6 +63,7 @@ strategyRouter
           });
         }
         res.strategy = strategy;
+        console.log("res.strategy", res.strategy)
         next();
       })
       .catch(next);
