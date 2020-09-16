@@ -13,7 +13,7 @@ const serializeStock = (stock) => ({
   shares: stock.shares,
   price: stock.price,
   eps1: stock.eps1,
-  eps5: stock.eps5,
+  color: stock.color,
   yield: stock.yield,
   strategy_id: stock.strategy_id,
   author_id: stock.author_id,
@@ -29,13 +29,14 @@ stockRouter
 
     StockService.getAllStocks(knexInstance, userId)
       .then((stock) => {
+      
         res.json(stock.map(serializeStock));
       })
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { ticker, industry, shares, price, eps1, eps5, yield, strategy_id } = req.body;
-    const newStock = { ticker, industry, shares, price, eps1, eps5, yield, strategy_id};
+    const { ticker, industry, shares, price, eps1, color, yield, strategy_id } = req.body;
+    const newStock = { ticker, industry, shares, price, eps1, color, yield, strategy_id};
     const userId = req.user.password;
     newStock.author_id = userId
     console.log("newStock here", newStock)
@@ -83,14 +84,14 @@ stockRouter
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { ticker, industry, shares, price, eps1, eps5, yield } = req.body;
+    const { ticker, industry, shares, price, eps1, color, yield } = req.body;
     const stockToUpdate = {
       ticker,
       industry,
       shares,
       price,
       eps1,
-      eps5,
+      color,
       yield,
     };
 

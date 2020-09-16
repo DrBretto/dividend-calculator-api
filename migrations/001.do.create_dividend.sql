@@ -26,7 +26,7 @@ CREATE TABLE stock (
     shares INTEGER not null,
     price NUMERIC not null,
     eps1 NUMERIC NOT NULL,
-    eps5 NUMERIC NOT NULL,
+    color TEXT,
     yield NUMERIC NOT NULL,
     strategy_id INTEGER
         REFERENCES strategy(id) ON DELETE CASCADE NOT NULL,

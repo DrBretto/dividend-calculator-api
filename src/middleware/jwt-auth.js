@@ -8,7 +8,7 @@ function requireAuth(req, res, next) {
     return res.status(401).json({ error: "Missing bearer token" });
   } else {
     bearerToken = authToken.slice(7, authToken.length);
-    console.log("requireAuth -> bearerToken", bearerToken)
+
   }
 
   try {
@@ -17,7 +17,7 @@ function requireAuth(req, res, next) {
     AuthService.getUserWithUserName(req.app.get("db"), payload.sub)
       .then((user) => {
         if (!user)
-          return res.status(401).json({ error: "Unauthorized uh-request" });
+          return res.status(401).json({ error: "Unauthorized request" });
 
         req.user = user;
         next();
