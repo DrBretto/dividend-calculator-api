@@ -1,9 +1,6 @@
 const StockService = {
   getAllStocks(knex, userId) {
-    return knex
-    .from("stock")
-    .select("*")
-    .where("stock.author_id", userId)
+    return knex.from("stock").select("*").where("stock.author_id", userId);
   },
 
   insertStock(knex, newStock) {

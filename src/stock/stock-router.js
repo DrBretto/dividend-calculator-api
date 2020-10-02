@@ -29,17 +29,33 @@ stockRouter
 
     StockService.getAllStocks(knexInstance, userId)
       .then((stock) => {
-      
         res.json(stock.map(serializeStock));
       })
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { ticker, industry, shares, price, eps1, color, yield, strategy_id } = req.body;
-    const newStock = { ticker, industry, shares, price, eps1, color, yield, strategy_id};
+    const {
+      ticker,
+      industry,
+      shares,
+      price,
+      eps1,
+      color,
+      yield,
+      strategy_id,
+    } = req.body;
+    const newStock = {
+      ticker,
+      industry,
+      shares,
+      price,
+      eps1,
+      color,
+      yield,
+      strategy_id,
+    };
     const userId = req.user.password;
-    newStock.author_id = userId
-    console.log("newStock here", newStock)
+    newStock.author_id = userId;
 
     for (const [key, value] of Object.entries(newStock))
       if (value == null)

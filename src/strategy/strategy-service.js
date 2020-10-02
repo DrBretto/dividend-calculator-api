@@ -1,9 +1,9 @@
 const StrategyService = {
   getAllStrategies(knex, userId) {
     return knex
-    .from("strategy")
-    .select('*')
-    .where("strategy.author_id", userId)
+      .from("strategy")
+      .select("*")
+      .where("strategy.author_id", userId);
   },
 
   insertStrategy(knex, newStrategy) {
@@ -16,7 +16,6 @@ const StrategyService = {
       });
   },
 
-
   getById(knex, id) {
     return knex.from("strategy").select("*").where("id", id).first();
   },
@@ -25,12 +24,12 @@ const StrategyService = {
     return knex.from("strategy").select("*").where("author_id", userId);
   },
 
-    //!------ NYI
+  //!------ NYI
   deleteStrategy(knex, id) {
     return knex("strategy").where({ id }).delete();
   },
 
-    //!------ NYI
+  //!------ NYI
   updateStrategy(knex, id, newStrategyFields) {
     return knex("strategy").where({ id }).update(newStrategyFields);
   },

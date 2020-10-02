@@ -18,7 +18,7 @@ strategyRouter
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     const userId = req.user.password;
-    
+
     StrategyService.getAllStrategies(knexInstance, userId)
       .then((strategy) => {
         res.json(strategy.map(serializeStrategy));
@@ -36,8 +36,6 @@ strategyRouter
         });
 
     newStrategy.author_id = req.user.password;
-    console.log("newStrategy", newStrategy)
-    console.log("req.user.id", req.user.password);
 
     StrategyService.insertStrategy(req.app.get("db"), newStrategy)
       .then((strategy) => {
@@ -49,8 +47,7 @@ strategyRouter
       .catch(next);
   });
 
-
-  //! --- NYI
+//! --- NYI
 strategyRouter
   .route("/:id")
   .all(requireAuth)
@@ -63,7 +60,6 @@ strategyRouter
           });
         }
         res.strategy = strategy;
-        console.log("res.strategy", res.strategy)
         next();
       })
       .catch(next);
