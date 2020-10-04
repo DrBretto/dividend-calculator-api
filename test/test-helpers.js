@@ -146,21 +146,17 @@ function seedUsers(db, users) {
     .into("users")
     .insert(preppedUsers)
     .then(() =>
-      // update the auto sequence to stay in sync
       db.raw(`SELECT setval('users_id_seq', ?)`, [users[users.length - 1].id])
     );
 }
 
 function seedStrategiesTables(db, users, strategies, stocks = []) {
-  // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async (trx) => {
     await seedUsers(trx, users);
     await trx.into("strategy").insert(strategies);
-    // update the auto sequence to match the forced id values
     await trx.raw(`SELECT setval('strategy_id_seq', ?)`, [
       strategies[strategies.length - 1].id,
     ]);
-    // only insert stocks if there are some, also update the sequence counter
     if (stocks.length) {
       await trx.into("stock").insert(stocks);
       await trx.raw(`SELECT setval('stock_id_seq', ?)`, [
@@ -184,7 +180,6 @@ module.exports = {
   makeExpectedStrategy,
   makeExpectedStrategyStocks,
   makeStocksArray,
-
   makeStrategiesFixtures,
   cleanTables,
   seedStrategiesTables,

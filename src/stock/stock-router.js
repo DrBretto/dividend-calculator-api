@@ -115,7 +115,7 @@ stockRouter
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must contain either name or content'`, //TODO  <-----------------
+          message: `Request body must contain either name or content'`,
         },
       });
 

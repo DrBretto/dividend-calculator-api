@@ -24,12 +24,10 @@ const StrategyService = {
     return knex.from("strategy").select("*").where("author_id", userId);
   },
 
-  //!------ NYI
   deleteStrategy(knex, id) {
     return knex("strategy").where({ id }).delete();
   },
 
-  //!------ NYI
   updateStrategy(knex, id, newStrategyFields) {
     return knex("strategy").where({ id }).update(newStrategyFields);
   },
