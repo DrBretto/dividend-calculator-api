@@ -7,4 +7,4 @@ const knexInstance = knex({
   connection: process.env.DATABASE_URL,
 });
 
-console.log(DividendService.getAllArticles());
+console.log(DividendService.getAllStrategies());
