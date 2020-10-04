@@ -25,13 +25,7 @@ describe("Strategies Endpoints", function () {
 
   afterEach("cleanup", () => helpers.cleanTables(db));
 
-  describe(`GET /api/strategies`, () => {
-    context(`Given no strategies`, () => {
-      it(`responds with 200 and an empty list`, () => {
-        return supertest(app).get("/api/strategies").expect(200, []);
-      });
-    });
-
+  describe(`GET /api/strategy`, () => {
     context("Given there are strategies in the database", () => {
       beforeEach("insert strategies", () =>
         helpers.seedStrategiesTables(db, testUsers, testStrategies, testStocks)
@@ -42,44 +36,27 @@ describe("Strategies Endpoints", function () {
           helpers.makeExpectedStrategy(testUsers, strategy, testStocks)
         );
         return supertest(app)
-          .get("/api/strategies")
+          .get("/api/strategy")
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
           .expect(200, expectedStrategies);
-      });
-    });
-
-    context(`Given an XSS attack strategy`, () => {
-      const testUser = helpers.makeUsersArray()[1];
-      const {
-        maliciousStrategy,
-        expectedStrategy,
-      } = helpers.makeMaliciousStrategy(testUser);
-
-      beforeEach("insert malicious strategy", () => {
-        return helpers.seedMaliciousStrategy(db, testUser, maliciousStrategy);
-      });
-
-      it("removes XSS attack content", () => {
-        return supertest(app)
-          .get(`/api/strategies`)
-          .expect(200)
-          .expect((res) => {
-            expect(res.body[0].title).to.eql(expectedStrategy.title);
-            expect(res.body[0].content).to.eql(expectedStrategy.content);
-          });
       });
     });
   });
 
-  describe(`GET /api/strategies/:strategy_id`, () => {
+  describe(`GET /api/strategy/:strategy_id`, () => {
     context(`Given no strategies`, () => {
       beforeEach(() => helpers.seedUsers(db, testUsers));
 
       it(`responds with 404`, () => {
         const strategyId = 123456;
         return supertest(app)
-          .get(`/api/strategies/${strategyId}`)
+          .get(`/api/strategy/${strategyId}`)
           .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-          .expect(404, { error: `Strategy doesn't exist` });
+          .expect(404, {
+            "error": {
+              "message": "strategy doesn't exist",
+            },
+          });
       });
     });
 
@@ -97,66 +74,9 @@ describe("Strategies Endpoints", function () {
         );
 
         return supertest(app)
-          .get(`/api/strategies/${strategyId}`)
+          .get(`/api/strategy/${strategyId}`)
           .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
           .expect(200, expectedStrategy);
-      });
-    });
-
-    context(`Given an XSS attack strategy`, () => {
-      const testUser = helpers.makeUsersArray()[1];
-      const {
-        maliciousStrategy,
-        expectedStrategy,
-      } = helpers.makeMaliciousStrategy(testUser);
-
-      beforeEach("insert malicious strategy", () => {
-        return helpers.seedMaliciousStrategy(db, testUser, maliciousStrategy);
-      });
-
-      it("removes XSS attack content", () => {
-        return supertest(app)
-          .get(`/api/strategies/${maliciousStrategy.id}`)
-          .set("Authorization", helpers.makeAuthHeader(testUser))
-          .expect(200)
-          .expect((res) => {
-            expect(res.body.title).to.eql(expectedStrategy.title);
-            expect(res.body.content).to.eql(expectedStrategy.content);
-          });
-      });
-    });
-  });
-
-  describe(`GET /api/strategies/:strategy_id/stocks`, () => {
-    context(`Given no strategies`, () => {
-      beforeEach(() => helpers.seedUsers(db, testUsers));
-
-      it(`responds with 404`, () => {
-        const strategyId = 123456;
-        return supertest(app)
-          .get(`/api/strategies/${strategyId}/stocks`)
-          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-          .expect(404, { error: `Strategy doesn't exist` });
-      });
-    });
-
-    context("Given there are stocks for strategy in the database", () => {
-      beforeEach("insert strategies", () =>
-        helpers.seedStrategiesTables(db, testUsers, testStrategies, testStocks)
-      );
-
-      it("responds with 200 and the specified stocks", () => {
-        const strategyId = 1;
-        const expectedStocks = helpers.makeExpectedStrategyStocks(
-          testUsers,
-          strategyId,
-          testStocks
-        );
-
-        return supertest(app)
-          .get(`/api/strategies/${strategyId}/stocks`)
-          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-          .expect(200, expectedStocks);
       });
     });
   });

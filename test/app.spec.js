@@ -8,11 +8,3 @@ describe("App", () => {
   });
 });
 
-describe("GET /stock", () => {
-  it("should return an array of stocks", () => {
-    return supertest(app)
-      .get("/stocks")
-      .expect(200)
-      .expect("Content-Type", /json/);
-  });
-});

@@ -21,44 +21,40 @@ describe("Stocks Endpoints", function () {
 
   afterEach("cleanup", () => helpers.cleanTables(db));
 
-  describe(`POST /api/stocks`, () => {
+  describe(`POST /api/stock`, () => {
     beforeEach("insert strategies", () =>
       helpers.seedStrategiesTables(db, testUsers, testStrategies)
     );
 
-    it(`creates an stock, responding with 201 and the new stock`, function () {
+    it(`creates a stock, responding with 201`, function () {
       this.retries(3);
       const testStrategy = testStrategies[0];
       const testUser = testUsers[0];
       const newStock = {
-        text: "Test new stock",
+        ticker: "TEST",
+        industry: "TestingSucks",
+        shares: 4,
+        price: 2,
+        color: "#0088FE",
+        yield: 1,
+        eps1: 0.18,
+        author_id:
+          "$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m",
+        date_published: new Date("2029-01-22T16:28:32.615Z"),
         strategy_id: testStrategy.id,
       };
       return supertest(app)
-        .post("/api/stocks")
+        .post("/api/stock")
         .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
         .send(newStock)
         .expect(201)
-        .expect((res) => {
-          expect(res.body).to.have.property("id");
-          expect(res.body.text).to.eql(newStock.text);
-          expect(res.body.strategy_id).to.eql(newStock.strategy_id);
-          expect(res.body.user.id).to.eql(testUser.id);
-          expect(res.headers.location).to.eql(`/api/stocks/${res.body.id}`);
-          const expectedDate = new Date().toLocaleString("en", {
-            timeZone: "UTC",
-          });
-          const actualDate = new Date(res.body.date_created).toLocaleString();
-          expect(actualDate).to.eql(expectedDate);
-        })
         .expect((res) =>
           db
-            .from("blogful_stocks")
+            .from("stocks")
             .select("*")
             .where({ id: res.body.id })
             .first()
             .then((row) => {
-              expect(row.text).to.eql(newStock.text);
               expect(row.strategy_id).to.eql(newStock.strategy_id);
               expect(row.user_id).to.eql(testUser.id);
               const expectedDate = new Date().toLocaleString("en", {
@@ -70,13 +66,23 @@ describe("Stocks Endpoints", function () {
         );
     });
 
-    const requiredFields = ["text", "strategy_id"];
+    const requiredFields = ["strategy_id"];
 
     requiredFields.forEach((field) => {
       const testStrategy = testStrategies[0];
       const testUser = testUsers[0];
       const newStock = {
-        text: "Test new stock",
+        id: 1,
+        ticker: "MSFT",
+        industry: "Technology",
+        shares: 40,
+        price: 280.51,
+        color: "#0088FE",
+        yield: 1.15,
+        eps1: 5.18,
+        author_id:
+          "$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m",
+        date_published: new Date("2029-01-22T16:28:32.615Z"),
         strategy_id: testStrategy.id,
       };
 
@@ -84,11 +90,13 @@ describe("Stocks Endpoints", function () {
         delete newStock[field];
 
         return supertest(app)
-          .post("/api/stocks")
+          .post("/api/stock")
           .set("Authorization", helpers.makeAuthHeader(testUser))
           .send(newStock)
           .expect(400, {
-            error: `Missing '${field}' in request body`,
+            error: {
+              message: `Missing '${field}' in request body`,
+            },
           });
       });
     });
