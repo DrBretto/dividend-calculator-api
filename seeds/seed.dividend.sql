@@ -2,26 +2,24 @@ TRUNCATE TABLE users, strategy, stock ;
 
 INSERT INTO users (id, user_name, full_name, password, nickname, date_created)
 VALUES
-  (26,'drbretto','Brett Westerlund','$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m',NULL,'2020-09-04 16:44:43'),
-  (27,'drbretto2','Test Full Name','$2a$12$bRUxowdxGefsLvVZZEa9Gugf7srbIePKAmPEJL6mdjAJ/OJuzdz0.','Test Nickname','2020-09-04 19:02:53'),
-  (28, 'Demo', 'Demo', '$2a$12$nWn9FFfvnRYRPeV7nWej.uGITxh347TMwIicz0Y9CkOPvTexO.HM6', 'Demo', '2020-09-04 19:02:53');
+  (1,'TestAccount','Testy Testofferson','$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2',NULL,'2020-09-04 16:44:43'),
+  (2,'drbretto','Is The Greatest','$2a$12$bRUxowdxGefsLvVZZEa9Gugf7srbIePKAmPEJL6mdjAJ/OJuzdz0.','Nickname','2020-09-04 19:02:53'),
+  (3, 'Demo', 'Demo', '$2a$12$nWn9FFfvnRYRPeV7nWej.uGITxh347TMwIicz0Y9CkOPvTexO.HM6', 'Demo', '2020-09-04 19:02:53');
 
 INSERT INTO strategy (id, title, date_published, author_id)
 VALUES 
-  (1, 'strategy numero uno', '2016-01-16 12:00:00', '$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m'),
+  (1, 'strategy numero uno', '2016-01-16 12:00:00', '$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2'),
   (2, 'Second Attempt at a strategy', '2016-01-16 12:00:00', '$2a$12$bRUxowdxGefsLvVZZEa9Gugf7srbIePKAmPEJL6mdjAJ/OJuzdz0.'),
-  (3, 'third times a charm', '2016-01-16 12:00:00', '$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m'),
+  (3, 'third times a charm', '2016-01-16 12:00:00', '$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2'),
   (12, 'My First Strategy', '2020-09-27 11:01:25', '$2a$12$nWn9FFfvnRYRPeV7nWej.uGITxh347TMwIicz0Y9CkOPvTexO.HM6'),
   (13, 'An Alternative Approach', '2020-09-27 11:12:43', '$2a$12$nWn9FFfvnRYRPeV7nWej.uGITxh347TMwIicz0Y9CkOPvTexO.HM6');
 
-
-
 INSERT INTO stock ( id, ticker, industry, shares, price, eps1, color, yield, author_id, strategy_id, date_published)
 VALUES
-  (1, 'MSFT', 'Technology', 40, 280.51, 1.15,'#0088FE', 5.18, '$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m', 1, '2016-01-16 12:00:00'),
-  (2, 'TRQ', 'Materials', 1000, 4.54, 5.76, '#FFBB28', 0.90, '$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m', 1, '2016-01-16 12:00:00'),
-  (3, 'TSLA', 'Automotive', 20, 480.94, 8.82,'#FF8042', 3.61, '$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m', 3, '2016-01-16 12:00:00'), 
-  (4, 'APL', 'Fruit', 20, 500, 2.13, '#407294', 3.31, '$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m', 3, '2016-01-16 12:00:00'),  
+  (1, 'MSFT', 'Technology', 40, 280.51, 1.15,'#0088FE', 5.18, '$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2', 1, '2016-01-16 12:00:00'),
+  (2, 'TRQ', 'Materials', 1000, 4.54, 5.76, '#FFBB28', 0.90, '$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2', 1, '2016-01-16 12:00:00'),
+  (3, 'TSLA', 'Automotive', 20, 480.94, 8.82,'#FF8042', 3.61, '$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2', 3, '2016-01-16 12:00:00'), 
+  (4, 'APL', 'Fruit', 20, 500, 2.13, '#407294', 3.31, '$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2', 3, '2016-01-16 12:00:00'),  
   (5, 'BUTT', 'Technology', 10, 60.90,  0.05, '#ff7373', 1.76, '$2a$12$bRUxowdxGefsLvVZZEa9Gugf7srbIePKAmPEJL6mdjAJ/OJuzdz0.', 2, '2016-01-16 12:00:00'), 
   (6, 'STUFF', 'Materials', 35, 90.60, 1.64, '#ffa500', 6.98, '$2a$12$bRUxowdxGefsLvVZZEa9Gugf7srbIePKAmPEJL6mdjAJ/OJuzdz0.', 2, '2016-01-16 12:00:00'), 
   (7, 'STONK', 'Technology', 37, 3.14, -4.71, '#FF8042', 3.02, '$2a$12$bRUxowdxGefsLvVZZEa9Gugf7srbIePKAmPEJL6mdjAJ/OJuzdz0.', 2, '2016-01-16 12:00:00'),

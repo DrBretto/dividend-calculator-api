@@ -47,7 +47,6 @@ strategyRouter
       .catch(next);
   });
 
-//! --- NYI
 strategyRouter
   .route("/:id")
   .all(requireAuth)
