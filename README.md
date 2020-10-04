@@ -10,7 +10,7 @@ Github - https://github.com/DrBretto/dividend-calculator-api
 
 ## _API Endpoints_
 
-'\*' - Requires Authentication
+\* - Requires Authentication
 
 - _`/api/auth`_
 
@@ -23,17 +23,17 @@ Github - https://github.com/DrBretto/dividend-calculator-api
 
 - _`/api/strategy`_
 
-  - '\*'GET `/` Returns list of all strategies for user. Returns array of objects.
-  - '\*'POST `/` Adds new strategy to db. Returns 201 and strategy object on success.
-  - '\*'GET `/:id` Returns strategy with matching ID.
-  - '\*'DELETE `/:id` Deletes strategy with matching ID and all related stocks. Returns empty object.
+  - \*GET `/` Returns list of all strategies for user. Returns array of objects.
+  - \*POST `/` Adds new strategy to db. Returns 201 and strategy object on success.
+  - \*GET `/:id` Returns strategy with matching ID.
+  - \*DELETE `/:id` Deletes strategy with matching ID and all related stocks. Returns empty object.
 
 - _`/api/stock`_
 
-  - '\*'GET `/` Returns list of all stocks for user. Returns array of objects.
-  - '\*'POST `/` Adds new stock to db. Returns stock.
-  - '\*'GET `/:id` Returns stock with matching ID.
-  - '\*'DELETE `/:id` Deletes stock with matching ID. Returns empty object.
+  - \*GET `/` Returns list of all stocks for user. Returns array of objects.
+  - \*POST `/` Adds new stock to db. Returns stock.
+  - \*GET `/:id` Returns stock with matching ID.
+  - \*DELETE `/:id` Deletes stock with matching ID. Returns empty object.
 
 - _`/api`_
   - GET `/` Returns 'Hello, world!'
