@@ -3,10 +3,24 @@
 This API is the backend for the [Dividend Calculator App](https://github.com/DrBretto/dividend-calculator-app)
 
 Client: Live - https://dividend-calculator-app.vercel.app/
+
 Github - https://github.com/DrBretto/dividend-calculator-app
 
 Api: Live - https://dashboard.heroku.com/apps/agile-peak-39361
+
 Github - https://github.com/DrBretto/dividend-calculator-api
+
+This app is a tool to help you evaluate your potential dividend
+allocation. Simply navigate to _investopedia.com_ to get the required
+info on the stocks you want to preview.
+
+You can then create a portfolio strategy by adding stocks and
+playing around with the values and see the effects of the changes
+in realtime
+
+For testing purposes, please log in with the following credentials:
+Username: Demo
+password: Passw0rd!
 
 ## _API Endpoints_
 
