@@ -22,6 +22,24 @@ For testing purposes, please log in with the following credentials:
 Username: Demo
 password: Passw0rd!
 
+How to use:
+
+**After creating an account or logging in, begin by entering the name of your first strategy:**
+
+![Add a Strategy](https://github.com/DrBretto/dividend-calculator-app/blob/master/images/AddStrat.JPG?raw=true)
+
+**Then, add as many stocks as you want to compare:**
+
+![Add a Stock](https://github.com/DrBretto/dividend-calculator-app/blob/master/images/AddStock.JPG?raw=true)
+
+**Every time you open the "+stock" window, it will generate a random color, but if you want to manually set colors, you can click on this dot here:**
+
+![Main View](https://github.com/DrBretto/dividend-calculator-app/blob/master/images/ChangeColor.JPG?raw=true)
+
+**If you've added too many stocks, you can delete it by clicking/tapping on the red x, followed by the green confirmation button.**
+
+![Main View](https://github.com/DrBretto/dividend-calculator-app/blob/master/images/DeleteStock.JPG?raw=true)
+
 ## _API Endpoints_
 
 \* - Requires Authentication

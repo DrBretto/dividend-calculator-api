@@ -98,32 +98,6 @@ stockRouter
         res.status(204).end();
       })
       .catch(next);
-  })
-  .patch(jsonParser, (req, res, next) => {
-    const { ticker, industry, shares, price, eps1, color, yield } = req.body;
-    const stockToUpdate = {
-      ticker,
-      industry,
-      shares,
-      price,
-      eps1,
-      color,
-      yield,
-    };
-
-    const numberOfValues = Object.values(stockToUpdate).filter(Boolean).length;
-    if (numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain either name or content'`,
-        },
-      });
-
-    StockService.updateStock(req.app.get("db"), req.params.id, stockToUpdate)
-      .then((numRowsAffected) => {
-        res.status(204).end();
-      })
-      .catch(next);
   });
 
 module.exports = stockRouter;

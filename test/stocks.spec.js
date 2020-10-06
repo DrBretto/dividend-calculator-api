@@ -1,4 +1,5 @@
 const knex = require("knex");
+const supertest = require("supertest");
 const app = require("../src/app");
 const helpers = require("./test-helpers");
 
@@ -39,7 +40,7 @@ describe("Stocks Endpoints", function () {
         yield: 1,
         eps1: 0.18,
         author_id:
-          "$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m",
+          "$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2",
         date_published: new Date("2029-01-22T16:28:32.615Z"),
         strategy_id: testStrategy.id,
       };
@@ -81,14 +82,13 @@ describe("Stocks Endpoints", function () {
         yield: 1.15,
         eps1: 5.18,
         author_id:
-          "$2a$12$lbG0Y4lpgmrT83oDg4HELuVAA7FNdwyMUUqXVjcvI/jW942lvKR/m",
+          "$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2",
         date_published: new Date("2029-01-22T16:28:32.615Z"),
         strategy_id: testStrategy.id,
       };
 
       it(`responds with 400 and an error message when the '${field}' is missing`, () => {
         delete newStock[field];
-
         return supertest(app)
           .post("/api/stock")
           .set("Authorization", helpers.makeAuthHeader(testUser))
@@ -98,6 +98,41 @@ describe("Stocks Endpoints", function () {
               message: `Missing '${field}' in request body`,
             },
           });
+      });
+    });
+  });
+
+  describe("DELETE /api/stocks/:stock_id", () => {
+    const stockIdToRemove = 2;
+    const {
+      testStrategies,
+      testUsers,
+      testStocks,
+    } = helpers.makeStrategiesFixtures();
+
+    context("Given no stocks", () => {
+      it("responds with 404", () => {
+        return supertest(app)
+          .delete(`/api/stocks/${stockIdToRemove}`)
+          .expect(404);
+      });
+    });
+
+    context("Given there are stocks in the database", () => {
+      beforeEach("insert stocks", () =>
+        helpers.seedStrategiesTables(db, testUsers, testStrategies, testStocks)
+      );
+
+      it("responds with 204 and removes the stock", () => {
+        const expectedStocks = testStocks.filter(
+          (stock) => stock.id !== stockIdToRemove
+        );
+        return supertest(app)
+          .delete(`/api/stocks/${stockIdToRemove}`)
+          .expect(204)
+          .then((res) =>
+            supertest(app).get("/api/stocks").expect(expectedStocks)
+          );
       });
     });
   });
