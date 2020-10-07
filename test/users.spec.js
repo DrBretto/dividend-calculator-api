@@ -56,11 +56,13 @@ describe("Users endpoints", () => {
         this.retries(3);
 
         const newUser = {
-          full_name: "Testy Testerson",
-          username: "TestTestTest",
-          password: "Passw0rd!!",
-          nickname: "Testy",
-          date_created: "now()",
+          id: 1,
+          user_name: "TestUser",
+          full_name: "Test",
+          nickname: "Testing",
+          password:
+            "$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2",
+          date_created: new Date("2029-01-22T16:28:32.615Z"),
         };
         return supertest(app)
           .post("/api/users")

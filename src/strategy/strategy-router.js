@@ -65,36 +65,6 @@ strategyRouter
   })
   .get((req, res, next) => {
     res.json(serializeStrategy(res.strategy));
-  })
-  .delete((req, res, next) => {
-    StrategyService.deleteStrategy(req.app.get("db"), req.params.id)
-      .then((numRowsAffected) => {
-        res.status(204).end();
-      })
-      .catch(next);
-  })
-  .patch(jsonParser, (req, res, next) => {
-    const { title } = req.body;
-    const strategyToUpdate = { title };
-
-    const numberOfValues = Object.values(strategyToUpdate).filter(Boolean)
-      .length;
-    if (numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain either name or content'`,
-        },
-      });
-
-    StrategyService.updateStrategy(
-      req.app.get("db"),
-      req.params.id,
-      strategyToUpdate
-    )
-      .then((numRowsAffected) => {
-        res.status(204).end();
-      })
-      .catch(next);
   });
 
 module.exports = strategyRouter;

@@ -105,7 +105,7 @@ function makeExpectedStrategyStocks(users, strategyId, stocks) {
       eps1: stock.eps1,
       author_id: stock.author_id,
       date_published: new Date("2029-01-22T16:28:32.615Z"),
-      strategy_id: strategies[0].id,
+      strategy_id: strategyId,
     };
   });
 }

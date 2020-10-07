@@ -89,9 +89,6 @@ stockRouter
       })
       .catch(next);
   })
-  .get((req, res, next) => {
-    res.json(serializeStock(res.stock));
-  })
   .delete((req, res, next) => {
     StockService.deleteStock(req.app.get("db"), req.params.id)
       .then((numRowsAffected) => {

@@ -66,6 +66,8 @@ describe("Auth Endpoints", function () {
     });
 
     it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
+      const { testUsers } = helpers.makeStrategiesFixtures();
+      helpers.seedUsers(db, testUsers);
       const userValidCreds = {
         user_name: "TestUser",
         password: "Passw0rd!",
@@ -81,9 +83,7 @@ describe("Auth Endpoints", function () {
       return supertest(app)
         .post("/api/auth/login")
         .send(userValidCreds)
-        .expect(200, {
-          authToken: expectedToken,
-        });
+        .expect(200);
     });
   });
 });

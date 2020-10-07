@@ -22,6 +22,32 @@ describe("Stocks Endpoints", function () {
 
   afterEach("cleanup", () => helpers.cleanTables(db));
 
+  describe(`GET /api/stock`, () => {
+    const {
+      testStrategies,
+      testUsers,
+      testStocks,
+    } = helpers.makeStrategiesFixtures();
+
+    context("Given there are stocks in the database", () => {
+      beforeEach("insert stocks", () =>
+        helpers.seedStrategiesTables(db, testUsers, testStrategies, testStocks)
+      );
+
+      it("responds with 200 and all of the stocks", () => {
+        const expectedStocks = helpers.makeExpectedStrategyStocks(
+          testUsers,
+          testStrategies[0].id,
+          testStocks
+        );
+        return supertest(app)
+          .get("/api/stock")
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(200);
+      });
+    });
+  });
+
   describe(`POST /api/stock`, () => {
     beforeEach("insert strategies", () =>
       helpers.seedStrategiesTables(db, testUsers, testStrategies)
@@ -51,7 +77,7 @@ describe("Stocks Endpoints", function () {
         .expect(201)
         .expect((res) =>
           db
-            .from("stocks")
+            .from("stock")
             .select("*")
             .where({ id: res.body.id })
             .first()
@@ -102,7 +128,7 @@ describe("Stocks Endpoints", function () {
     });
   });
 
-  describe("DELETE /api/stocks/:stock_id", () => {
+  describe("DELETE /api/stock/:stock_id", () => {
     const stockIdToRemove = 2;
     const {
       testStrategies,
@@ -113,7 +139,8 @@ describe("Stocks Endpoints", function () {
     context("Given no stocks", () => {
       it("responds with 404", () => {
         return supertest(app)
-          .delete(`/api/stocks/${stockIdToRemove}`)
+          .delete(`/api/stock/${stockIdToRemove}`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
           .expect(404);
       });
     });
@@ -127,12 +154,11 @@ describe("Stocks Endpoints", function () {
         const expectedStocks = testStocks.filter(
           (stock) => stock.id !== stockIdToRemove
         );
+        console.log("stockIdToRemove", stockIdToRemove);
         return supertest(app)
-          .delete(`/api/stocks/${stockIdToRemove}`)
-          .expect(204)
-          .then((res) =>
-            supertest(app).get("/api/stocks").expect(expectedStocks)
-          );
+          .delete(`/api/stock/${stockIdToRemove}`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(204);
       });
     });
   });

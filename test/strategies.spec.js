@@ -80,4 +80,43 @@ describe("Strategies Endpoints", function () {
       });
     });
   });
+
+  describe(`POST /api/strategy`, () => {
+    beforeEach("insert strategies", () =>
+      helpers.seedStrategiesTables(db, testUsers, testStrategies)
+    );
+
+    it(`creates a strategy, responding with 201`, function () {
+      this.retries(3);
+      const testStrategy = testStrategies[0];
+      const testUser = testUsers[0];
+      const newStrategy = {
+        title: "TEST",
+        author_id:
+          "$2a$12$RcKSB8GYaOfuHYZfE8sHkunaBAaRGxWTCVei8hXHGVCSbntTQjBS2",
+        date_published: new Date("2029-01-22T16:28:32.615Z"),
+      };
+      return supertest(app)
+        .post("/api/strategy")
+        .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+        .send(newStrategy)
+        .expect(201)
+        .expect((res) =>
+          db
+            .from("strategy")
+            .select("*")
+            .where({ id: res.body.id })
+            .first()
+            .then((row) => {
+              expect(row.strategy_id).to.eql(newStock.strategy_id);
+              expect(row.user_id).to.eql(testUser.id);
+              const expectedDate = new Date().toLocaleString("en", {
+                timeZone: "UTC",
+              });
+              const actualDate = new Date(row.date_created).toLocaleString();
+              expect(actualDate).to.eql(expectedDate);
+            })
+        );
+    });
+  });
 });
